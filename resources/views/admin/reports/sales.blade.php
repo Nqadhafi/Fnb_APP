@@ -1,5 +1,11 @@
 @extends('layouts.admin')
 @section('title','Laporan Penjualan')
+@php
+  // Default agar tidak error jika controller belum mengirim variabel ini
+  $summary = $summary ?? ['count' => 0, 'total' => 0];
+  $breakdownMethods = $breakdownMethods ?? [];
+  $breakdownStatus  = $breakdownStatus  ?? [];
+@endphp
 
 @section('content')
 <div class="card">
@@ -28,23 +34,27 @@
   <div class="col-md-4">
     <div class="card"><div class="card-body py-2">
       <div class="mb-1"><strong>Per Metode</strong></div>
+      @if(!empty($breakdownMethods))
       @foreach($breakdownMethods as $m => $r)
         <div class="d-flex justify-content-between small">
           <span>{{ strtoupper($m) }}</span>
           <span>{{ $r['count'] }} trx — Rp {{ number_format($r['amount'],0,',','.') }}</span>
         </div>
       @endforeach
+      @endif
     </div></div>
   </div>
   <div class="col-md-4">
     <div class="card"><div class="card-body py-2">
       <div class="mb-1"><strong>Per Status</strong></div>
+      @if(!empty($breakdownStatus))
       @foreach($breakdownStatus as $s => $r)
         <div class="d-flex justify-content-between small">
           <span>{{ $s }}</span>
           <span>{{ $r['count'] }} trx — Rp {{ number_format($r['amount'],0,',','.') }}</span>
         </div>
       @endforeach
+        @endif
     </div></div>
   </div>
 </div>
