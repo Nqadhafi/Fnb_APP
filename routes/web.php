@@ -77,7 +77,8 @@ Route::middleware('auth')->group(function () {
 
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout.show');
-    Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.place');
+    Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place');
+
 
     // Orders (riwayat & detail user)
     Route::get('/orders', [UserOrderController::class, 'index'])->name('orders.index');
