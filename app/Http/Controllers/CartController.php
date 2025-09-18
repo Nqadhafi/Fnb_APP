@@ -73,7 +73,7 @@ class CartController extends Controller
     public function update(Request $request, CartItem $item)
     {
         $data = $request->validate(['qty' => 'required|integer|min:1']);
-        abort_unless($item->cart->session_id === $request->session()->getId(), 403);
+        abort_unless($item->cart->session_id == $request->session()->getId(), 403);
 
         $item->update(['qty' => $data['qty']]);
 
@@ -86,7 +86,7 @@ class CartController extends Controller
 
     public function remove(Request $request, CartItem $item)
     {
-        abort_unless($item->cart->session_id === $request->session()->getId(), 403);
+        abort_unless($item->cart->session_id == $request->session()->getId(), 403);
         $cart = $item->cart;
         $item->delete();
 

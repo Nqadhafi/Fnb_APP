@@ -139,7 +139,7 @@ class ProductController extends Controller
     // Tandai sebagai primary
     public function setPrimaryImage(Product $product, ProductImage $image)
     {
-        abort_unless($image->product_id === $product->id, 404);
+        abort_unless($image->product_id == $product->id, 404);
         $product->images()->update(['is_primary' => false]);
         $image->update(['is_primary' => true]);
         return back()->with('ok','Gambar utama diset.');

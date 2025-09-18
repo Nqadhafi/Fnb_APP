@@ -17,7 +17,7 @@ class PaymentController extends Controller
     // Upload bukti transfer/e-wallet oleh user
     public function uploadProof(Request $request, Order $order)
     {
-        abort_unless($order->user_id === $request->user()->id, 403);
+        abort_unless($order->user_id == $request->user()->id, 403);
         $request->validate([
             'amount' => 'required|numeric|min:0',
             'proof'  => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',

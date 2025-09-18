@@ -14,19 +14,31 @@ class AuthController extends Controller
     // Login
     public function showLogin() { return view('auth.login'); }
 
-    public function login(Request $request)
-    {
-        $cred = $request->validate([
-            'email'    => ['required','email'],
-            'password' => ['required'],
-        ]);
+public function login(Request $request)
+{
+    $credentials = $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required',
+    ]);
 
-        if (Auth::attempt($cred, $request->boolean('remember'))) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('home'));
+    if (Auth::attempt($credentials, $request->boolean('remember'))) {
+        $request->session()->regenerate();
+
+        $user = Auth::user();
+
+        // 🔑 Redirect sesuai role
+        if ($user->role === 'admin') {
+            return redirect()->intended('/admin');
         }
-        return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
+
+        return redirect()->intended(route('home'));
     }
+
+    return back()->withErrors([
+        'email' => 'Email atau password salah.',
+    ])->onlyInput('email');
+}
+
 
     // Register
     public function showRegister() { return view('auth.register'); }
@@ -92,7 +104,7 @@ class AuthController extends Controller
             }
         );
 
-        return $status === Password::PASSWORD_RESET
+        return $status == Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status','Password berhasil direset.')
             : back()->withErrors(['email' => 'Token reset tidak valid atau kedaluwarsa.']);
     }

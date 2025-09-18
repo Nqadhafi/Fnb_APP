@@ -77,7 +77,7 @@ public function payCash(Request $request, Order $order)
     } else {
         // Jika tidak dipilih, dan hanya ada SATU sesi open ⇒ pakai itu otomatis
         $open = \App\Models\PosSession::whereNull('closed_at')->orderByDesc('id')->limit(2)->get(['id']);
-        if ($open->count() === 1) {
+        if ($open->count() == 1) {
             $posSessionId = $open->first()->id;
         }
     }

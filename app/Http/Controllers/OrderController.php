@@ -21,7 +21,7 @@ class OrderController extends Controller
 
     public function show(Request $request, Order $order)
     {
-        abort_unless($order->user_id === $request->user()->id || $request->user()->role === 'admin', 403);
+        abort_unless($order->user_id == $request->user()->id || $request->user()->role == 'admin', 403);
         $order->load(['items','payments']);
         return view('public.orders.show', compact('order'));
     }

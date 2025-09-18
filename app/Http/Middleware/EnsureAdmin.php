@@ -16,7 +16,7 @@ class EnsureAdmin
     public function handle(Request $request, Closure $next): Response
     {
         $u = $request->user();
-        if (!$u || $u->role !== 'admin') {
+        if (!$u || $u->role != 'admin') {
             abort(403, 'Only admins can access this area.');
         }
         return $next($request);
